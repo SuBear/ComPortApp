@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ComPortApp.Entites;
 
 namespace ComPortApp
 {
@@ -8,8 +9,7 @@ namespace ComPortApp
     {
         public ParsedPortInfo ParsePortData(string firstLine, string secondLine, IDictionary<int, int> tableData)
         {
-            var retVal = new ParsedPortInfo();
-            retVal.Height = GetParsedHeight(firstLine, tableData);
+            var retVal = new ParsedPortInfo {Height = GetParsedHeight(firstLine, tableData)};
             var parsedSecondLineArray = secondLine.Split(',');
             retVal.TimeStamp = GetTimeStamp(parsedSecondLineArray[1]);
             retVal.Latitude = GetLatitude(parsedSecondLineArray[2]);
