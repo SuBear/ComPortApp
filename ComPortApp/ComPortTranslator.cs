@@ -47,7 +47,9 @@ namespace ComPortApp
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            PrintTranslatedResults(_port.ReadExisting());
+            var firstLine = _port.ReadLine();
+            var secondLine = _port.ReadLine();
+            ProcessTranslatedResults(firstLine, secondLine);
         }
 
         private void ParseDataTable()
@@ -69,41 +71,18 @@ namespace ComPortApp
             file.Close();
         }
         
-        private void PrintTranslatedResults(string portData)
+        private void ProcessTranslatedResults(string firstLine, string secondLine)
         {
             using (var sw = new StreamWriter(_resultFileName))
             {
-                _stringBuilder = _stringBuilder.AppendLine(portData);
+                _stringBuilder = _stringBuilder.AppendLine(firstLine);
+                _stringBuilder = _stringBuilder.AppendLine(secondLine);
                 sw.Write(_stringBuilder.ToString());
-                string[] parcedPortData = ParsePortData(portData);
-                string result = string.Format("Time: {0} Height: {1}", parcedPortData[0], parcedPortData[1]);
-                Console.WriteLine(result);
+                var portDataParser = new PortDataParser();
+                var parcedPortData = portDataParser.ParsePortData(firstLine, secondLine, _tableData);
+                //string result = string.Format("Time: {0} Height: {1}", parcedPortData[0], parcedPortData[1]);
+                //Console.WriteLine(result);
             }
-        }
-
-        private string[] ParsePortData(string portData)
-        {
-            var replacedData = portData.Trim();
-            replacedData = replacedData.Replace(" ", "");
-            replacedData = replacedData.Replace("\r", "");
-            replacedData = replacedData.Replace("Time-", "");
-            var stringArray = new string[1];
-            stringArray[0] = "Pressure-";
-            var parsedArray = replacedData.Split(stringArray, StringSplitOptions.None);
-            int pressure = int.Parse(parsedArray[1]);
-            if (pressure > 836)
-            {
-                parsedArray[1] = "0";
-            }
-            else if (pressure < 6)
-            {
-                parsedArray[1] = "16000";
-            }
-            else
-            {
-                parsedArray[1] = _tableData[pressure].ToString();
-            }
-            return parsedArray;
         }
     }
 }
