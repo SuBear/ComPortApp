@@ -45,8 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComPortTranslator.cs" />
+    <Compile Include="ComPortController.cs" />
+    <Compile Include="AngleValuesProvider.cs" />
     <Compile Include="Entites\ConfigurationInfo.cs" />
+    <Compile Include="Entites\CoordinatesDifferenceInfo.cs" />
     <Compile Include="InitialDataProvider.cs" />
     <Compile Include="Entites\ParsedPortInfo.cs" />
     <Compile Include="PortDataParser.cs" />

@@ -78,7 +78,7 @@ namespace ComPortApp
             {
                 Console.WriteLine(ex.Message);
             }
-            return retVal;
+            return (float)Math.Round(retVal, 4);
         }
 
         private float GetLongitude(string longitudeString)
@@ -95,7 +95,7 @@ namespace ComPortApp
             {
                 Console.WriteLine(ex.Message);
             }
-            return retVal;
+            return (float)Math.Round(retVal, 4);
         }
 
         private int GetAltutude(string altitudeString)
