@@ -41,8 +41,8 @@ namespace ComPortApp
                 var firstAngleDouble = Math.Atan(altitude / Math.Sqrt(Math.Pow(latitudeDifference, 2)
                     + Math.Pow(longitudeDifference, 2)));
                 firstAngle = (byte)Math.Round(firstAngleDouble * 100 / Math.PI);
-                var startLatitudeDifference = configuration.StartLatitude - configuration.ObservationPointLatitude;
-                var startLongitudeDifference = configuration.StartLatitude - configuration.ObservationPointLongitude;
+                var startLatitudeDifference = (configuration.StartLatitude - configuration.ObservationPointLatitude) * configuration.LatitudeMultiplier;
+                var startLongitudeDifference = (configuration.StartLongitude - configuration.ObservationPointLongitude) * configuration.LongitudeMultiplier;
                 var secondAngleIsPositive = (longitudeDifference
                                              * (startLatitudeDifference) - latitudeDifference
                                              * (startLongitudeDifference)) > 0;
@@ -51,7 +51,7 @@ namespace ComPortApp
                 var secondBotSup = Math.Sqrt(Math.Pow(latitudeDifference, 2)
                     + Math.Pow(longitudeDifference, 2))
                     * Math.Sqrt(Math.Pow(startLatitudeDifference, 2) + Math.Pow(startLongitudeDifference, 2));
-                var secondAngleDoulble = secondTopSum/secondBotSup;
+                var secondAngleDoulble = Math.Acos(secondTopSum/secondBotSup);
                 if (!secondAngleIsPositive)
                 {
                     secondAngleDoulble = -secondAngleDoulble;
@@ -73,23 +73,24 @@ namespace ComPortApp
             bool retVal = false;
             var configuration = InitialDataProvider.GetConfig();
             var latitudeDifference = parsedInfo.Latitude - configuration.ObservationPointLatitude;
-            if (latitudeDifference < 0)
-            {
-                latitudeDifference = - latitudeDifference;
-            }
             var longitudeDifference = parsedInfo.Longitude - configuration.ObservationPointLongitude;
-            if (longitudeDifference < 0)
-            {
-                longitudeDifference = -longitudeDifference;
-            }
             var latitudeIsValid = latitudeDifference <= configuration.MaxValidLatitude;
             var longitudeIsValid = longitudeDifference <= configuration.MaxValidLongitude;
+            int altitude;
+            if (parsedInfo.Altitude > configuration.StartHeight)
+            {
+                altitude = parsedInfo.Altitude;
+            }
+            else
+            {
+                altitude = parsedInfo.Height < configuration.StartHeight ? configuration.StartHeight : parsedInfo.Height;
+            }
             if (latitudeIsValid && longitudeIsValid)
             {
                 retVal = true;
                 _validCoordinatesDifferenceInfo = new CoordinatesDifferenceInfo
                     {
-                        Altitude = parsedInfo.Altitude,
+                        Altitude = altitude,
                         LatitudeDifference = latitudeDifference,
                         LongitudeDifference = longitudeDifference
                     };

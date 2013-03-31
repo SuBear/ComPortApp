@@ -29,8 +29,8 @@ namespace ComPortApp
         public static void InitializeConfigData()
         {
             string value = ConfigurationManager.AppSettings[StartLatitude];
-            float startLatitude;
-            if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out startLatitude))
+            double startLatitude;
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out startLatitude))
             {
                 Console.WriteLine(InvalidParameterMessage, StartLatitude);
                 CloseApplication();
@@ -40,8 +40,8 @@ namespace ComPortApp
                 ConfigurationInfo.StartLatitude = startLatitude;
             }
             value = ConfigurationManager.AppSettings[StartLongitude];
-            float startLongitude;
-            if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out startLongitude))
+            double startLongitude;
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out startLongitude))
             {
                 Console.WriteLine(InvalidParameterMessage, StartLongitude);
                 CloseApplication();
@@ -62,8 +62,8 @@ namespace ComPortApp
                 ConfigurationInfo.StartHeight = startHeight;
             }
             value = ConfigurationManager.AppSettings[ObservationPointLatitude];
-            float observationPointLatitude;
-            if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out observationPointLatitude))
+            double observationPointLatitude;
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out observationPointLatitude))
             {
                 Console.WriteLine(InvalidParameterMessage, ObservationPointLatitude);
                 CloseApplication();
@@ -73,8 +73,8 @@ namespace ComPortApp
                 ConfigurationInfo.ObservationPointLatitude = observationPointLatitude;
             }
             value = ConfigurationManager.AppSettings[ObservationPointLongitude];
-            float observationPointLongitude;
-            if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out observationPointLongitude))
+            double observationPointLongitude;
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out observationPointLongitude))
             {
                 Console.WriteLine(InvalidParameterMessage, ObservationPointLongitude);
                 CloseApplication();
@@ -95,8 +95,8 @@ namespace ComPortApp
                 ConfigurationInfo.ObservationPointHeight = observationPointHeight;
             }
             value = ConfigurationManager.AppSettings[MaxValidLatitude];
-            float maxValidLatitude;
-            if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out maxValidLatitude))
+            double maxValidLatitude;
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out maxValidLatitude))
             {
                 Console.WriteLine(InvalidParameterMessage, MaxValidLatitude);
                 CloseApplication();
@@ -106,8 +106,8 @@ namespace ComPortApp
                 ConfigurationInfo.MaxValidLatitude = maxValidLatitude;
             }
             value = ConfigurationManager.AppSettings[MaxValidLongitude];
-            float maxValidLongitude;
-            if (!float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out maxValidLongitude))
+            double maxValidLongitude;
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out maxValidLongitude))
             {
                 Console.WriteLine(InvalidParameterMessage, MaxValidLongitude);
                 CloseApplication();

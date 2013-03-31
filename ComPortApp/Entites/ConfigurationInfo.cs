@@ -6,14 +6,14 @@ namespace ComPortApp.Entites
     {
         private const int LatitudeMultiplierConst = 111111;
 
-        public float StartLatitude { get; set; }
-        public float StartLongitude { get; set; }
+        public double StartLatitude { get; set; }
+        public double StartLongitude { get; set; }
         public int StartHeight { get; set; }
-        public float ObservationPointLatitude { get; set; }
-        public float ObservationPointLongitude { get; set; }
+        public double ObservationPointLatitude { get; set; }
+        public double ObservationPointLongitude { get; set; }
         public int ObservationPointHeight { get; set; }
-        public float MaxValidLatitude { get; set; }
-        public float MaxValidLongitude { get; set; }
+        public double MaxValidLatitude { get; set; }
+        public double MaxValidLongitude { get; set; }
         public int LatitudeMultiplier 
         {
             get { return LatitudeMultiplierConst; }
@@ -21,7 +21,7 @@ namespace ComPortApp.Entites
 
         public int LongitudeMultiplier
         {
-            get { return (int)Math.Cos(ObservationPointLatitude*Math.PI/180); }
+            get { return (int)(Math.Cos(ObservationPointLatitude * Math.PI / 180) * LatitudeMultiplier); }
         }
     }
 }

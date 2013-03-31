@@ -64,46 +64,46 @@ namespace ComPortApp
             return retVal;
         }
 
-        private float GetLatitude(string latitudeString)
+        private double GetLatitude(string latitudeString)
         {
-            float retVal = 0;
+            double retVal = 0;
             try
             {
-                float.TryParse(latitudeString.Substring(0, 2), NumberStyles.Float, CultureInfo.InvariantCulture, out retVal);
-                float partitivePart;
-                float.TryParse(latitudeString.Substring(2), NumberStyles.Float, CultureInfo.InvariantCulture, out partitivePart);
+                double.TryParse(latitudeString.Substring(0, 2), NumberStyles.Float, CultureInfo.InvariantCulture, out retVal);
+                double partitivePart;
+                double.TryParse(latitudeString.Substring(2), NumberStyles.Float, CultureInfo.InvariantCulture, out partitivePart);
                 retVal = retVal + partitivePart / 60;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            return (float)Math.Round(retVal, 4);
+            return (double)Math.Round(retVal, 4);
         }
 
-        private float GetLongitude(string longitudeString)
+        private double GetLongitude(string longitudeString)
         {
-            float retVal = 0;
+            double retVal = 0;
             try
             {
-                float.TryParse(longitudeString.Substring(0, 3), NumberStyles.Float, CultureInfo.InvariantCulture, out retVal);
-                float partitivePart;
-                float.TryParse(longitudeString.Substring(3), NumberStyles.Float, CultureInfo.InvariantCulture, out partitivePart);
+                double.TryParse(longitudeString.Substring(0, 3), NumberStyles.Float, CultureInfo.InvariantCulture, out retVal);
+                double partitivePart;
+                double.TryParse(longitudeString.Substring(3), NumberStyles.Float, CultureInfo.InvariantCulture, out partitivePart);
                 retVal = retVal + partitivePart / 60;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            return (float)Math.Round(retVal, 4);
+            return (double)Math.Round(retVal, 4);
         }
 
         private int GetAltutude(string altitudeString)
         {
-            float retVal = 0;
+            double retVal = 0;
             try
             {
-                float.TryParse(altitudeString, NumberStyles.Float, CultureInfo.InvariantCulture, out retVal);
+                double.TryParse(altitudeString, NumberStyles.Float, CultureInfo.InvariantCulture, out retVal);
             }
             catch (Exception ex)
             {

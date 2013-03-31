@@ -2,8 +2,8 @@
 {
     public class CoordinatesDifferenceInfo
     {
-        public float LatitudeDifference { get; set; }
-        public float LongitudeDifference { get; set; }
+        public double LatitudeDifference { get; set; }
+        public double LongitudeDifference { get; set; }
         public int Altitude { get; set; }
     }
 }
