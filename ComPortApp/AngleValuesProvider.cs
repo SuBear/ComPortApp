@@ -46,8 +46,8 @@ namespace ComPortApp
                 var secondAngleIsPositive = (longitudeDifference
                                              * (startLatitudeDifference) - latitudeDifference
                                              * (startLongitudeDifference)) > 0;
-                var secondTopSum = latitudeDifference * startLongitudeDifference
-                                   + longitudeDifference * startLatitudeDifference;
+                var secondTopSum = latitudeDifference * startLatitudeDifference
+                                   + longitudeDifference * startLongitudeDifference;
                 var secondBotSup = Math.Sqrt(Math.Pow(latitudeDifference, 2)
                     + Math.Pow(longitudeDifference, 2))
                     * Math.Sqrt(Math.Pow(startLatitudeDifference, 2) + Math.Pow(startLongitudeDifference, 2));

@@ -23,8 +23,8 @@ namespace ComPortApp.Tests
 
             //then
             Assert.IsNotNull(result);
-            //Assert.AreEqual(firstAngle, result[0]);
-            //Assert.AreEqual(secondAngle, result[1]);
+            Assert.AreEqual(firstAngle, result[0]);
+            Assert.AreEqual(secondAngle, result[1]);
         }
     }
 }
