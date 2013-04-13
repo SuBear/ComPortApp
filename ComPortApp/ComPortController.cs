@@ -29,7 +29,7 @@ namespace ComPortApp
         {
             ParseDataTable();
             _port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One);
-            Console.WriteLine("Trying to open connection to port " + portName);
+            Console.WriteLine("Connectign to port  " + portName);
             InitPortListerning();
         }
 
@@ -53,7 +53,7 @@ namespace ComPortApp
         private void InitPortListerning()
         {
             _port.DataReceived += _port_DataReceived;
-            InitKeyCommandsHandling();
+            //InitKeyCommandsHandling();
         }
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -145,7 +145,7 @@ namespace ComPortApp
         }
 
         private void SendBytesToPort(byte[] bytesToSend)
-        {/
+        {
             _port.Write(bytesToSend, 0, 3);
             LogPortDataSending(bytesToSend);
         }
