@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Ports;
 using System.Text;
@@ -28,6 +29,7 @@ namespace ComPortApp
         {
             ParseDataTable();
             _port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One);
+            Console.WriteLine("Trying to open connection to port " + portName);
             InitPortListerning();
         }
 
@@ -88,6 +90,7 @@ namespace ComPortApp
                     SendBytesToPort(_lastValidDataSent);
                     break;
             }
+            InitKeyCommandsHandling();
         }
 
         private void ParseDataTable()
@@ -111,11 +114,11 @@ namespace ComPortApp
         
         private void ProcessTranslatedResults(string firstLine, string secondLine)
         {
-            using (var sw = new StreamWriter(_portDataFileName))
+            using (var sw = new StreamWriter(_portDataFileName, true))
             {
                 _stringBuilder = _stringBuilder.AppendLine(firstLine);
                 _stringBuilder = _stringBuilder.AppendLine(secondLine);
-                sw.Write(_stringBuilder.ToString());
+                sw.WriteLine(_stringBuilder.ToString());
                 _stringBuilder.Clear();
                 var portDataParser = new PortDataParser();
                 var parcedPortData = portDataParser.ParsePortData(firstLine, secondLine, _tableData);
@@ -154,10 +157,13 @@ namespace ComPortApp
                 timeString, _lastParsedPortInfo.Height, _lastParsedPortInfo.Latitude,
                 _lastParsedPortInfo.Longitude, _lastParsedPortInfo.Altitude);
             Console.WriteLine(result);
-            using (var sw = new StreamWriter(_translatedDataFileName))
+            using (var sw = new StreamWriter(_translatedDataFileName, true))
             {
-                _stringBuilder = _stringBuilder.AppendLine(result);
-                _stringBuilder = _stringBuilder.AppendLine(" Bytes Sent To Controller: " + bytesToSend);
+                var bytesToSendList = new List<byte>(bytesToSend);
+                bytesToSendList.ForEach(x => _stringBuilder.Append(x.ToString(CultureInfo.InvariantCulture) + " "));
+                var bytesToSendString = _stringBuilder.ToString();
+                _stringBuilder.Clear();
+                _stringBuilder = _stringBuilder.AppendLine(result + " Bytes Sent To Controller: " + bytesToSendString);
                 sw.Write(_stringBuilder.ToString());
                 _stringBuilder.Clear();
             }
