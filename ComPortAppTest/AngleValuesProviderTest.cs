@@ -5,7 +5,6 @@ namespace ComPortApp.Tests
 {
     public class AngleValuesProviderTest
     {
-        [Test]
         [TestCase(48.6978, 35.4686, 500, 450, 15, 240)]
         public void GetAngleValues_Test(double latitude, double longitude, int altitude, int height,
             int firstAngle, int secondAngle)
