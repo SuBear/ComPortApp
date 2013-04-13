@@ -52,8 +52,8 @@ namespace ComPortApp
         
         private void InitPortListerning()
         {
-            InitKeyCommandsHandling();
             _port.DataReceived += _port_DataReceived;
+            InitKeyCommandsHandling();
         }
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -145,7 +145,7 @@ namespace ComPortApp
         }
 
         private void SendBytesToPort(byte[] bytesToSend)
-        {
+        {/
             _port.Write(bytesToSend, 0, 3);
             LogPortDataSending(bytesToSend);
         }
