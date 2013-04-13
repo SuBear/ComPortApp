@@ -19,7 +19,6 @@ namespace ComPortApp
         private readonly string _translatedDataFileName = string.Format("translatedData{0}.txt",
             DateTime.UtcNow).Replace(" ", "").Replace(":", "_");
 
-        private byte _keyByteToSend;
         private byte[] _lastValidDataSent = new byte[] {0, 0, 0};
         private ParsedPortInfo _lastParsedPortInfo = new ParsedPortInfo();
 
@@ -70,7 +69,7 @@ namespace ComPortApp
                 case ConsoleKey.Enter:
                     break;
                 case ConsoleKey.R:
-                    _keyByteToSend = 1;
+                    SendBytesToPort(new byte[] {0, 0, 1});
                     break;
                 case ConsoleKey.LeftArrow:
                     _lastValidDataSent[1] = _lastValidDataSent[1] >= -90 ? (byte)(_lastValidDataSent[1] - 2) : _lastValidDataSent[1];
@@ -138,8 +137,7 @@ namespace ComPortApp
             {
                 bytesToSend[i] = angleValues[i];
             }
-            bytesToSend[2] = _keyByteToSend;
-            _keyByteToSend = 0;
+            bytesToSend[2] = 0;
             SendBytesToPort(bytesToSend);
         }
 
