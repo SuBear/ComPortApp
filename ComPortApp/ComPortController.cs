@@ -134,8 +134,8 @@ namespace ComPortApp
             if (infoIsValid)
             {
                 _lastValidDataSent = angleValues;
-                _lastParsedPortInfo = parsedPortInfo;
             }
+            _lastParsedPortInfo = parsedPortInfo;
             for (int i = 0; i < 2; i++)
             {
                 bytesToSend[i] = angleValues[i];
