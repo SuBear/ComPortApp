@@ -74,8 +74,8 @@ namespace ComPortApp
             var configuration = InitialDataProvider.GetConfig();
             var latitudeDifference = parsedInfo.Latitude - configuration.ObservationPointLatitude;
             var longitudeDifference = parsedInfo.Longitude - configuration.ObservationPointLongitude;
-            var latitudeIsValid = latitudeDifference <= configuration.MaxValidLatitude;
-            var longitudeIsValid = longitudeDifference <= configuration.MaxValidLongitude;
+            var latitudeIsValid = Math.Abs(latitudeDifference) <= configuration.MaxValidLatitude;
+            var longitudeIsValid =  Math.Abs(longitudeDifference) <= configuration.MaxValidLongitude;
             int altitude;
             if (parsedInfo.Altitude > configuration.StartHeight)
             {
