@@ -20,7 +20,6 @@ namespace ComPortApp
             InitialDataProvider.InitializeConfigData();
             var portListener = new ComPortController(portName);
             portListener.Activate();
-            Console.ReadLine();
             portListener.Deactivate();
         }
     }

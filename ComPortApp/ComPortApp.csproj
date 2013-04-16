@@ -64,6 +64,7 @@
     <Compile Include="AngleValuesProvider.cs" />
     <Compile Include="Entites\ConfigurationInfo.cs" />
     <Compile Include="Entites\CoordinatesDifferenceInfo.cs" />
+    <Compile Include="FakePort.cs" />
     <Compile Include="InitialDataProvider.cs" />
     <Compile Include="Entites\ParsedPortInfo.cs" />
     <Compile Include="PortDataParser.cs" />

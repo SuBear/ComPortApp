@@ -13,6 +13,8 @@ namespace ComPortApp
         private readonly SerialPort _port = new SerialPort(
             "COM1", 9600, Parity.None, 8, StopBits.One);
 
+        //private FakePort _fakePort;
+
         private readonly IDictionary<int, int> _tableData = new Dictionary<int, int>();
         private StringBuilder _stringBuilder = new StringBuilder();
         private readonly string _portDataFileName = string.Format("portData{0}.txt", 
@@ -41,7 +43,7 @@ namespace ComPortApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Port have failed to open with following message" + ex.Message);
+                Console.WriteLine("Port have failed to open with following message: " + ex.Message);
             }
         }
 
@@ -53,7 +55,14 @@ namespace ComPortApp
         private void InitPortListerning()
         {
             _port.DataReceived += _port_DataReceived;
-            //InitKeyCommandsHandling();
+            //_fakePort = new FakePort(100);
+            //_fakePort.DataReceived += _fakePort_DataReceived;
+            InitKeyCommandsHandling();
+        }
+
+        private void _fakePort_DataReceived(object sender, EventArgs e)
+        {
+            Console.WriteLine("Got it!");
         }
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -65,13 +74,13 @@ namespace ComPortApp
 
         private void InitKeyCommandsHandling()
         {
-            var input = Console.ReadKey();
+            var input = Console.ReadKey(true);
             switch (input.Key)
             {
                 case ConsoleKey.Enter:
                     break;
                 case ConsoleKey.R:
-                    SendBytesToPort(new byte[] {0, 0, 1});
+                    SendBytesToPort(new byte[] { 0, 0, 1 });
                     break;
                 case ConsoleKey.LeftArrow:
                     _lastValidDataSent[1] = _lastValidDataSent[1] >= -90 ? (byte)(_lastValidDataSent[1] - 2) : _lastValidDataSent[1];
@@ -146,6 +155,10 @@ namespace ComPortApp
 
         private void SendBytesToPort(byte[] bytesToSend)
         {
+            if (!_port.IsOpen)
+            {
+                _port.Open();
+            }
             _port.Write(bytesToSend, 0, 3);
             LogPortDataSending(bytesToSend);
         }
