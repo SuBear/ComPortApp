@@ -7,20 +7,55 @@ namespace ComPortApp
         [STAThread]
         static void Main(string[] args)
         {
-            string portName;
-            if(args.Length < 1)
+            try
             {
-                Console.WriteLine("Please enter the port name");
-                portName = Console.ReadLine();
+                string portName;
+                if (args.Length < 1)
+                {
+                    Console.WriteLine("Please enter the port name");
+                    portName = Console.ReadLine();
+                }
+                else
+                {
+                    portName = args[0];
+                }
+                InitialDataProvider.InitializeConfigData();
+                var portListener = new ComPortController(portName);
+                portListener.Activate();
+                InitKeyCommandsHandling(portListener);
+                portListener.Deactivate();
             }
-            else
+            catch (Exception ex)
             {
-                portName = args[0];
+                Console.WriteLine(ex.Message);
             }
-            InitialDataProvider.InitializeConfigData();
-            var portListener = new ComPortController(portName);
-            portListener.Activate();
-            portListener.Deactivate();
+            
+        }
+
+        private static void InitKeyCommandsHandling(ComPortController controller)
+        {
+            var input = Console.ReadKey(true);
+            switch (input.Key)
+            {
+                case ConsoleKey.Enter:
+                    break;
+                case ConsoleKey.R:
+                    controller.Reset();
+                    break;
+                case ConsoleKey.LeftArrow:
+                    controller.MoveLeft();
+                    break;
+                case ConsoleKey.RightArrow:
+                    controller.MoveRight();
+                    break;
+                case ConsoleKey.UpArrow:
+                    controller.MoveUp();
+                    break;
+                case ConsoleKey.DownArrow:
+                    controller.MoveDown();
+                    break;
+            }
+            InitKeyCommandsHandling(controller);
         }
     }
 }

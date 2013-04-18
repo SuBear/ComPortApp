@@ -38,7 +38,8 @@ namespace ComPortApp
                     || Math.Abs(longitudeDifference - 0) > Epsilon)
             {
                 var altitude = infoIsValid ? currentHeight : height;
-                var firstAngleDouble = Math.Atan(altitude / Math.Sqrt(Math.Pow(latitudeDifference, 2)
+                var validAltitude = altitude > configuration.StartHeight ? altitude - configuration.StartHeight : 0;
+                var firstAngleDouble = Math.Atan(validAltitude / Math.Sqrt(Math.Pow(latitudeDifference, 2)
                     + Math.Pow(longitudeDifference, 2)));
                 firstAngle = (byte)Math.Round(firstAngleDouble * 100 / Math.PI);
                 var startLatitudeDifference = (configuration.StartLatitude - configuration.ObservationPointLatitude) * configuration.LatitudeMultiplier;

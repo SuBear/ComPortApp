@@ -22,7 +22,7 @@ namespace ComPortApp
         private readonly string _translatedDataFileName = string.Format("translatedData{0}.txt",
             DateTime.UtcNow).Replace(" ", "").Replace(":", "_");
 
-        private byte[] _lastValidDataSent = new byte[] {0, 0, 0};
+        private byte[] _lastDataSent = new byte[] {0, 0, 0};
         private ParsedPortInfo _lastParsedPortInfo = new ParsedPortInfo();
 
         private readonly AngleValuesProvider _angleValuesProvider = new AngleValuesProvider();
@@ -31,7 +31,7 @@ namespace ComPortApp
         {
             ParseDataTable();
             _port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One);
-            Console.WriteLine("Connectign to port  " + portName);
+            Console.WriteLine("Connectign to port " + portName);
             InitPortListerning();
         }
 
@@ -52,54 +52,52 @@ namespace ComPortApp
             _port.Close();
         }
         
+        public void Reset()
+        {
+            SendBytesToPort(new byte[] { 0, 0, 1 });
+        }
+
+        public void MoveLeft()
+        {
+            _lastDataSent[1] = _lastDataSent[1] >= -90 ? (byte)(_lastDataSent[1] - 2) : _lastDataSent[1];
+            SendBytesToPort(_lastDataSent);
+        }
+
+        public void MoveRight()
+        {
+            _lastDataSent[1] = _lastDataSent[1] <= 90 ? (byte)(_lastDataSent[1] + 2) : _lastDataSent[1];
+            SendBytesToPort(_lastDataSent);
+        }
+
+        public void MoveUp()
+        {
+            _lastDataSent[0] = _lastDataSent[0] <= 48 ? (byte)(_lastDataSent[0] + 2) : _lastDataSent[0];
+            SendBytesToPort(_lastDataSent);
+        }
+
+        public void MoveDown()
+        {
+            _lastDataSent[0] = _lastDataSent[0] >= 2 ? (byte)(_lastDataSent[0] - 2) : _lastDataSent[0];
+            SendBytesToPort(_lastDataSent);
+        }
+
         private void InitPortListerning()
         {
             _port.DataReceived += _port_DataReceived;
-            //_fakePort = new FakePort(100);
+            //_fakePort = new FakePort(1000);
             //_fakePort.DataReceived += _fakePort_DataReceived;
-            InitKeyCommandsHandling();
         }
 
-        private void _fakePort_DataReceived(object sender, EventArgs e)
-        {
-            Console.WriteLine("Got it!");
-        }
+        //private void _fakePort_DataReceived(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine("Got it!");
+        //}
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             var firstLine = _port.ReadLine();
             var secondLine = _port.ReadLine();
             ProcessTranslatedResults(firstLine, secondLine);
-        }
-
-        private void InitKeyCommandsHandling()
-        {
-            var input = Console.ReadKey(true);
-            switch (input.Key)
-            {
-                case ConsoleKey.Enter:
-                    break;
-                case ConsoleKey.R:
-                    SendBytesToPort(new byte[] { 0, 0, 1 });
-                    break;
-                case ConsoleKey.LeftArrow:
-                    _lastValidDataSent[1] = _lastValidDataSent[1] >= -90 ? (byte)(_lastValidDataSent[1] - 2) : _lastValidDataSent[1];
-                    SendBytesToPort(_lastValidDataSent);
-                    break;
-                case ConsoleKey.RightArrow:
-                    _lastValidDataSent[1] = _lastValidDataSent[1] <= 90 ? (byte)(_lastValidDataSent[1] + 2) : _lastValidDataSent[1];
-                    SendBytesToPort(_lastValidDataSent);
-                    break;
-                case ConsoleKey.UpArrow:
-                    _lastValidDataSent[0] = _lastValidDataSent[0] <= 48 ? (byte)(_lastValidDataSent[0] + 2) : _lastValidDataSent[0];
-                    SendBytesToPort(_lastValidDataSent);
-                    break;
-                case ConsoleKey.DownArrow:
-                    _lastValidDataSent[0] = _lastValidDataSent[0] >= 2 ? (byte)(_lastValidDataSent[0] - 2) : _lastValidDataSent[0];
-                    SendBytesToPort(_lastValidDataSent);
-                    break;
-            }
-            InitKeyCommandsHandling();
         }
 
         private void ParseDataTable()
@@ -140,16 +138,13 @@ namespace ComPortApp
         {
             var bytesToSend = new byte[3];
             var angleValues = _angleValuesProvider.GetAngleValues(parsedPortInfo.Height, infoIsValid);
-            if (infoIsValid)
-            {
-                _lastValidDataSent = angleValues;
-            }
             _lastParsedPortInfo = parsedPortInfo;
             for (int i = 0; i < 2; i++)
             {
                 bytesToSend[i] = angleValues[i];
             }
             bytesToSend[2] = 0;
+            _lastDataSent = bytesToSend;
             SendBytesToPort(bytesToSend);
         }
 
