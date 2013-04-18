@@ -144,7 +144,11 @@ namespace ComPortApp
                 bytesToSend[i] = angleValues[i];
             }
             bytesToSend[2] = 0;
-            _lastDataSent = bytesToSend;
+            _lastDataSent[0] = bytesToSend[0];
+            if (infoIsValid)
+            {
+                _lastDataSent[1] = bytesToSend[1];
+            }
             SendBytesToPort(bytesToSend);
         }
 
