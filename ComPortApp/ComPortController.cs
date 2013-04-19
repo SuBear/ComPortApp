@@ -59,13 +59,15 @@ namespace ComPortApp
 
         public void MoveLeft()
         {
-            _lastDataSent[1] = _lastDataSent[1] >= -90 ? (byte)(_lastDataSent[1] - 2) : _lastDataSent[1];
+            _lastDataSent[1] = _lastDataSent[1] <= 92 || _lastDataSent[1] >= 166 
+                ? (byte)(_lastDataSent[1] - 2) : _lastDataSent[1];
             SendBytesToPort(_lastDataSent);
         }
 
         public void MoveRight()
         {
-            _lastDataSent[1] = _lastDataSent[1] <= 90 ? (byte)(_lastDataSent[1] + 2) : _lastDataSent[1];
+            _lastDataSent[1] = _lastDataSent[1] <= 90 || _lastDataSent[1] >= 164 
+                ? (byte)(_lastDataSent[1] + 2) : _lastDataSent[1];
             SendBytesToPort(_lastDataSent);
         }
 
