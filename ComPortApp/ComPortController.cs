@@ -139,7 +139,7 @@ namespace ComPortApp
         private void TranslateResults(ParsedPortInfo parsedPortInfo, bool infoIsValid)
         {
             var bytesToSend = new byte[3];
-            var angleValues = _angleValuesProvider.GetAngleValues(parsedPortInfo.Height, infoIsValid);
+            var angleValues = _angleValuesProvider.GetAngleValues(parsedPortInfo.Height, _lastDataSent[1], infoIsValid);
             _lastParsedPortInfo = parsedPortInfo;
             for (int i = 0; i < 2; i++)
             {

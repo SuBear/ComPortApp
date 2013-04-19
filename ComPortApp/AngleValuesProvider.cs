@@ -9,9 +9,8 @@ namespace ComPortApp
         private const int MaxAngle = 50;
 
         private CoordinatesDifferenceInfo _validCoordinatesDifferenceInfo;
-        private int _previoulySentAngle = 0;
 
-        public byte[] GetAngleValues(int height, bool infoIsValid)
+        public byte[] GetAngleValues(int height, int previouslySentAngle, bool infoIsValid)
         {
             var retVal = new byte[2];
             var configuration = InitialDataProvider.GetConfig();
@@ -62,7 +61,7 @@ namespace ComPortApp
             else
             {
                 firstAngle = MaxAngle;
-                secondAngle = (byte)_previoulySentAngle;
+                secondAngle = (byte)previouslySentAngle;
             }
             retVal[0] = firstAngle;
             retVal[1] = secondAngle;
