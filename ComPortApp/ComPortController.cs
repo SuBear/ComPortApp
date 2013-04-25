@@ -151,7 +151,7 @@ namespace ComPortApp
             {
                 _lastDataSent[1] = bytesToSend[1];
             }
-            SendBytesToPort(bytesToSend);
+            SendBytesToPort(_lastDataSent);
         }
 
         private void SendBytesToPort(byte[] bytesToSend)
@@ -170,17 +170,19 @@ namespace ComPortApp
             string result = string.Format("Time: {0} Height: {1} Latitude: {2} Longitude: {3} Altitude: {4}",
                 timeString, _lastParsedPortInfo.Height, _lastParsedPortInfo.Latitude,
                 _lastParsedPortInfo.Longitude, _lastParsedPortInfo.Altitude);
-            Console.WriteLine(result);
+            string output;
             using (var sw = new StreamWriter(_translatedDataFileName, true))
             {
                 var bytesToSendList = new List<byte>(bytesToSend);
                 bytesToSendList.ForEach(x => _stringBuilder.Append(x.ToString(CultureInfo.InvariantCulture) + " "));
                 var bytesToSendString = _stringBuilder.ToString();
                 _stringBuilder.Clear();
-                _stringBuilder = _stringBuilder.AppendLine(result + " Bytes Sent To Controller: " + bytesToSendString);
+                output = result + " Bytes Sent To Controller: " + bytesToSendString;
+                _stringBuilder = _stringBuilder.AppendLine(output);
                 sw.Write(_stringBuilder.ToString());
                 _stringBuilder.Clear();
             }
+            Console.WriteLine(output);
         }
     }
 }
